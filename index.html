@@ -69,9 +69,6 @@ $(document).keyup(function(event){
 			var phone = document.getElementById('phoneText').value;
 			var url = 'api.php';
 			var postData={phone:phone};
-			/*$.post(url,postData,function(response){
-				console.log(response);
-			});*/
 			// 将数据传到api.php  获取手机号的信息
 			$.post(url,postData,function(response){
 				if(response.length==51){
@@ -87,17 +84,15 @@ $(document).keyup(function(event){
 			 		value = value.replace('array(8){[','');
 			 		value = value.replace('}','');
 			 		value = value.replace(regYinhao,'');
-			 		key = value.split(']=>')[0];
-			 		value = value.split(')')[1];
-				    arr +=value+',';
-				    arr = arr.split(',');
+					key = value.match(/(\w+)\]/)[1];
+			 		value = value.match(/\)(\S+)/)[1];
+				    arr[key] =value;
 				});
-				// console.log(arr);
 				// 将数据传到表格里面
-				$('#phoneNumber').text(arr[3]);
-				$('#phoneProvince').text(arr[1]);
-				$('#phoneCatName').text(arr[6]);
-				$('#phoneMsg').text(arr[7]);
+				$('#phoneNumber').text(arr['telString']);
+				$('#phoneProvince').text(arr['province']);
+				$('#phoneCatName').text(arr['catName']);
+				$('#phoneMsg').text(arr['msg']);
 				$('#phoneInfo').show();
 				}
 			});
